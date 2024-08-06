@@ -7,10 +7,10 @@ in each folder we have the below hierarchy:
 ```
 |
 |- Session#
-|      |_ drafts.ps1                # This is the texts that I write in our session
+|      |_ drafts.ps1                # This is the texts that I write in our session.
 |      |_ exercises-questions.ps1   # This is the excercise file, containing questions only.
 |      |_ exercises-solutions.ps1   # This is the excercise file, with answers included.
-|      |_ training-materials        # This is the presentation for our session.
+|      |_ training-materials.md     # This is the presentation for our session.
 |
 ```
 # Usage:
