@@ -345,4 +345,4 @@ The fundamentals of function creation in PowerShell.
 How to work with both simple and advanced function parameters, including parameter sets.
 Practical, advanced examples like logging and sending formatted emails with custom HTML.
 A variety of exercises to solidify your understanding.
-* Continue practicing by writing your own functions and expanding on these concepts to master PowerShell scripting! *
+**Continue practicing by writing your own functions and expanding on these concepts to master PowerShell scripting!**
