@@ -89,3 +89,5 @@ function New-Employee {
 
     Invoke-RestMethod -Method Post -Uri 'https://psdemo.adminfamily.com/api/v1/employees' -Body $body -ContentType 'application/json'
 }
+
+# the above function is part of the answer. the full answer will be available before session 8.
