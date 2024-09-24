@@ -7,8 +7,7 @@ In this session, we will dive deeper into writing **function help** in PowerShel
 ### Topics Covered
 1. **Writing Help for Functions**
 2. **PowerShell Modules and Components**
-3. **Using .NET DLLs in PowerShell (with GitHub example)**
-4. **Advanced Function Practices**
+3. **Advanced Function Practices**
 
 ---
 
@@ -150,60 +149,9 @@ To make the module available to all users, place it in `C:\Program Files\Windows
 
 ---
 
-## 3. Using .NET DLLs in PowerShell
+## 3. More Practice: Functions and Modules
 
-One of PowerShell's strengths is its ability to use .NET classes and libraries, allowing access to additional functionality provided by external assemblies (DLLs). This is a powerful feature that opens up new possibilities, such as integrating with third-party libraries or creating reusable components.
-
-### 3.1 Loading a .NET Assembly
-
-To use a .NET DLL, you first need to load it into your PowerShell session. Here’s an example of using the **Persia.Net** library from GitHub.
-
-**Example**: Loading the **Persia.Net** library from GitHub, which helps convert dates and times to Persian (Jalali) formats.
-
-1. **Download the DLL** from GitHub:
-   [Persia.Net GitHub Repository](https://github.com/shahabfar/Persia.Net)
-   - You can download the **Persia.dll** from the [releases](https://github.com/shahabfar/Persia.Net/releases) section or build it locally.
-
-2. **Load the DLL into PowerShell**:
-   ```powershell
-   Add-Type -Path "C:\path\to\Persia.dll"
-   ```
-
-### 3.2 Using the Library in PowerShell
-
-Now that the DLL is loaded, you can call its methods directly from PowerShell. Here's an example of using the `PersianDateConverter` library to convert a Gregorian date to Persian format:
-
-```powershell
-# Using Persia.Net to convert Gregorian date to Persian date
-$gregorianDate = Get-Date
-$persianDate = [Persia.Calendar]::ConvertToPersian($gregorianDate)
-$persianDate.Persian
-```
-
-You can wrap this functionality into a PowerShell function for easier reuse:
-
-### 3.3 Wrapping the DLL in a PowerShell Function
-
-```powershell
-function Convert-ToPersianDate {
-    param ([datetime]$Date)
-
-    Add-Type -Path "C:\path\to\Persia.dll"
-    $persianDate = [Persia.Calendar]::ConvertToPersian($Date)
-    return $persianDate.Persian
-}
-
-# Example usage
-Convert-ToPersianDate -Date (Get-Date)  # Output: Persian date string
-```
-
-This example demonstrates how using an external .NET DLL can extend PowerShell's capabilities and be packaged into a reusable function.
-
----
-
-## 4. More Practice: Functions and Modules
-
-### 4.1 Practice: Adding Function Help
+### 3.1 Practice: Adding Function Help
 
 Create a function that converts temperatures between Celsius and Fahrenheit, and write a proper help block for it.
 
@@ -243,9 +191,115 @@ function Convert-Temperature {
 }
 ```
 
-### 4.2 Practice: Building a Module
+### 3.2 Practice: Building a Module
 
 Create a module that contains functions for basic math operations (e.g., addition, subtraction, multiplication, division) and write a manifest for it.
+
+### 3.3 Using the Library in PowerShell
+
+When you Import DLL, you can call its methods directly from PowerShell. Here's an example of using the `PersianTools` library to convert a Gregorian date to Persian format:
+
+```powershell
+# Using Persia.Net to convert Gregorian date to Persian date
+$gregorianDate = Get-Date
+$persianDate = [Persia.Calendar]::ConvertToPersian($gregorianDate)
+$persianDate.Persian
+```
+
+You can wrap this functionality into a PowerShell function for easier reuse:
+
+### 3.3 Wrapping the DLL in a PowerShell Function
+
+```powershell
+ 
+function Get-PersianDate {
+    [CmdletBinding(DefaultParameterSetName = 'DateObject')]
+    param (
+        [Parameter(Mandatory = $false,
+            ParameterSetName = 'DateObject',
+            HelpMessage = 'Pass a DateTime Object',
+            Position = 0)]
+        [datetime]$DateObject,
+
+        [Parameter(Mandatory = $true,
+            ParameterSetName = 'Splitted',
+            HelpMessage = 'Specify Year, Month and Day',
+            Position = 0)]
+        [int]$Year,
+
+        [Parameter(Mandatory = $false,
+            ParameterSetName = 'Splitted',
+            HelpMessage = 'Specify Year, Month and Day',
+            Position = 1)]
+        [int]$Month = 0,
+
+        [Parameter(Mandatory = $false,
+            ParameterSetName = 'Splitted',
+            HelpMessage = 'Specify Year, Month and Day',
+            Position = 2)]
+        [int]$Day = 0,
+
+        [Parameter(Mandatory = $true,
+            ParameterSetName = 'String',
+            HelpMessage = 'Specify date as string',
+            Position = 0)]
+        [string]$Date,
+
+        [switch]$PrettyOut
+    )
+    # Load the Assembly first
+    [System.Reflection.Assembly]::LoadFrom("C:\Data\Code\PersianCalendar\PersianTools.Core.dll") | Out-Null
+    $c = [PersianTools.Core.PersianDateTime]::new
+    
+    if ($DateObject) {
+        $output = [PersianTools.Core.PersianDateExtensions]::ToShamsiDateTime($DateObject)
+    }
+
+    if ((!$Year) -and (!$DateObject)) {
+        $output = [PersianTools.Core.PersianDateExtensions]::ToShamsiDateTime((Get-Date))
+    }
+
+    if ($Year -and (!$Date)) {
+        $output = $c.invoke($Year, $Month, $Day);
+    }
+    if($Date -and (!$Year) -and (!$DateObject)){
+        if($Date.Contains('/')){
+        $output = $c.Invoke($Date)
+        }
+    }
+
+    if ($PrettyOut) {
+        return "$($output.DayOfWeek), $($output.Day) $($output.MonthOfYear) $($output.Year) - ساعت $($output.Hour):$($output.Minute):$($output.Second)"
+    }
+    else {
+        return $output
+    }
+} 
+
+
+# Example usage
+Get-PersianDate -DateObject (Get-Date)  # Output: Persian date string
+ DateTime      : 9/24/2024 1:08:08 PM
+Millisecond   : 941
+Second        : 8
+Minute        : 8
+Hour          : 13
+Day           : 3
+Month         : 7
+Year          : 1403
+DayOfWeek     : سه شنبه
+MonthOfYear   : مهر
+ShamsiDate    : 1403/07/03
+TimeOfDay     : 13:08:08.9410996
+DateMetaDatas : {}
+HijriDate     : PersianTools.Core.HijriDate
+IsHoliDay     : False
+ 
+
+```
+
+This example demonstrates how using an external .NET DLL can extend PowerShell's capabilities and be packaged into a reusable function.
+
 
 ---
 
