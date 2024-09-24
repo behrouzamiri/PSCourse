@@ -148,6 +148,47 @@ $env:PSModulePath
 To make the module available to all users, place it in `C:\Program Files\WindowsPowerShell\Modules\`.
 
 ---
+### 2.5 Publishing Modules
+# Steps to Create and Use a PowerShell Repository on SMB Share
+
+## Step 1: Set Up the SMB Share
+1. Create a shared folder on the server (e.g., `\\server\PowerShellRepo`).
+2. Ensure read/write permissions for users.
+
+## Step 2: Create the SMB Repository
+You can publish your modules in a NuGet repository, to make it available anywhere, as well as orchestrate the update procedure, meaning that any changes to the code locally, will be published again into the repository (with different version, expectedly), and then invoking `update-module` Cmdlet anywhere it's being used.
+here's the steps to create an internal-network PowerShell repository and publishing your module:
+
+1. Install required modules:
+   ```powershell
+   Install-Module -Name PowerShellGet -Force
+   Install-PackageProvider -Name NuGet -Force
+    ```
+
+2. Register the SMB repository:
+```powershell
+Register-PSRepository -Name "MySMBRepo" -SourceLocation "\\server\PowerShellRepo" -InstallationPolicy Trusted
+```
+
+3. Create or update the module manifest (if needed):
+```powershell
+New-ModuleManifest -Path "/path/to/MyModule.psd1" -Author "Your Name" -CompanyName "Your Company" -description "some description about this module"
+```
+
+4. Publish the module to the repository:
+```powershell
+Publish-Module -Name PSDemoEmployee -Repository MySMBRepo -NuGetApiKey 'AnyString'
+Step 4: Install the Module from the SMB Repository
+```
+5. Use the module on another machine:
+After this step as we saw, a `.nuget` file will be created in the repository. You can register the repository on other machines, so that the modules in this repository is available to them for installation or update:
+```powershell
+# register module on another server:
+Register-PSRepository -Name "MySMBRepo" -SourceLocation "\\server\PowerShellRepo" -InstallationPolicy Trusted
+
+# Install the module:
+Install-Module -Name PSDemoEmployee -Repository MySMBRepo
+```
 
 ## 3. More Practice: Functions and Modules
 
