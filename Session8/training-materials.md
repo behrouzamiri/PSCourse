@@ -5,7 +5,7 @@
 Before diving into web development with Pode, let's define some key terms:
 
 ### 1.1 What is an Endpoint?
-An **endpoint** is a specific URL where an API receives requests. Example: `/api/urls`.
+An **endpoint** is a specific URL where an API receives requests. Example: `https://mysite.example:8090/`.
 
 ### 1.2 What is a Route?
 A **route** maps HTTP methods (GET, POST, etc.) and URL paths to specific functions. In Pode, routes are defined using the `Add-PodeRoute` cmdlet.
@@ -13,9 +13,6 @@ A **route** maps HTTP methods (GET, POST, etc.) and URL paths to specific functi
 ### 1.3 HTTP Request and Response
 - **Request**: The data a client sends to the server (e.g., asking for or sending data).
 - **Response**: The server's answer, often with status codes (e.g., 200 OK).
-
-### 1.4 Query String
-Query strings are key-value pairs passed in the URL after `?`, e.g., `/search?query=example`.
 
 ---
 
