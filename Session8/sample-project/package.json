@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "name": "DWS.AD.Portal.PasswordReset",
+  "author": "DWS Team",
+  "license": "MIT",
+  "description": "A Simple Reset Password Portal for the Operation Employees!",
+  "scripts": {
+    "build": "psake",
+    "start": "./server.ps1",
+    "test": "invoke-pester ./tests/*.ps1",
+    "install": "yarn install --force --ignore-scripts --modules-folder pode_modules"
+  },
+  "main": "./server.ps1"
+}

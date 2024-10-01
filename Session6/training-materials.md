@@ -288,6 +288,7 @@ This function sends a formatted HTML email using an SMTP server and port 587. It
 
 ```powershell
 function Send-FormattedEmail {
+    [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
         [string]$Message,
@@ -301,35 +302,52 @@ function Send-FormattedEmail {
         [Parameter(Mandatory)]
         [string]$SmtpServer,
 
-        [Parameter()]
+        [Parameter(Mandatory)]
+        [string]$From,
+
+        [Parameter(Mandatory)]
         [string]$Recipient = "recipient@example.com",
 
         [Parameter()]
         [string]$Subject = "Formatted Email"
     )
-    
-    # Convert the object to HTML table
-    $htmlBody = "<html><body><p>$Message</p><table border='1'>"
-    
+
+    # Start building the HTML email body with themed colors
+    $htmlBody = @"
+    <html>
+        <body style='font-family: Arial, sans-serif; color: #333;'>
+            <div style='background-color: #f9f9f9; padding: 15px; border: 1px solid #ddd;'>
+                <h2 style='color: #007acc;'>$Message</h2>
+                <table border='1' cellpadding='8' cellspacing='0' style='border-collapse: collapse; width: 100%;'>
+"@
+
     if ($Object -is [array]) {
-        # Multiple objects - make table with headers
+        # Add table headers if multiple objects are passed
         $headers = ($Object[0].PSObject.Properties | ForEach-Object { $_.Name }) -join "</th><th>"
-        $htmlBody += "<tr><th>$headers</th></tr>"
+        $htmlBody += "<thead><tr style='background-color: #007acc; color: white;'><th>$headers</th></tr></thead>"
+        
+        # Add table rows for each object
         foreach ($item in $Object) {
             $row = ($item.PSObject.Properties | ForEach-Object { $_.Value }) -join "</td><td>"
-            $htmlBody += "<tr><td>$row</td></tr>"
+            $htmlBody += "<tr style='background-color: #f2f2f2; color: #333;'><td>$row</td></tr>"
         }
     } else {
         # Single object - key-value table
         foreach ($property in $Object.PSObject.Properties) {
-            $htmlBody += "<tr><td>$($property.Name)</td><td>$($property.Value)</td></tr>"
+            $htmlBody += "<tr style='background-color: #f2f2f2; color: #333;'><td><b style='color: #007acc;'>$($property.Name)</b></td><td>$($property.Value)</td></tr>"
         }
     }
-    
-    $htmlBody += "</table></body></html>"
-    
-    # Send email
-    Send-MailMessage -To $Recipient -From "noreply@example.com" -Subject $Subject `
+
+    # Close HTML tags
+    $htmlBody += @"
+                </table>
+            </div>
+        </body>
+    </html>
+"@
+
+    # Send email using SMTP
+    Send-MailMessage -To $Recipient -From $From -Subject $Subject `
         -Body $htmlBody -BodyAsHtml -SmtpServer $SmtpServer -Port 587 -Credential $Credential
 }
 

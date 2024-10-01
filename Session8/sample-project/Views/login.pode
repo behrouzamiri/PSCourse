@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Bootstrap CSS (Local) -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS for Vazirmatn Font -->
+    <link href="/css/custom.css" rel="stylesheet">
+    <style>
+        label {
+            direction: rtl;
+            text-align: right;
+        }
+        /* Custom styles for centering and spacing */
+        .centered-form {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #f7f7f7;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            direction: rtl;
+            text-align: right;
+        }
+        input#username, input#password {
+            direction: ltr;
+            text-align: left;
+        }
+        body {
+            background-color: #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="centered-form">
+            <h2 class="text-center">احراز هویت</h2>
+            $(
+            if($data.redir){
+            "<form method=`"post`" action=`"/login?redir=$($data.redir)`">" ;
+            } else {"<form method=`"post`" action=`"/login`">";})
+                <div style="text-align: right;">
+                <label>نام کاربری:</label>
+                    <input type="text" placeholder="e.example بدون @adminfamily.com" class="form-control" id="username" name="username" required/>
+                </div>
+                <div style="text-align: right;">
+                    <label>رمز عبور:</label>
+                    <input type="password" name="password" placeholder="رمز عبور سیستم/ایمیل شما" class="form-control" id="password"/>
+                </div>
+                <div style="margin-top: 10px;">
+                    <button type="submit" class="btn btn-primary btn-block" value="Login">ورود به سیستم</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Local JavaScript Files -->
+    <script src="/js/jquery-3.7.1.slim.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+/* Define the Vazirmatn font family using the font files in /fonts/static/ */
+@font-face {
+    font-family: 'Vazirmatn';
+    src: url('/fonts/static/Vazirmatn-Black.ttf') format('truetype'),
+         url('/fonts/static/Vazirmatn-Bold.ttf') format('truetype'),
+         url('/fonts/static/Vazirmatn-ExtraBold.ttf') format('truetype'),
+         url('/fonts/static/Vazirmatn-ExtraLight.ttf') format('truetype'),
+         url('/fonts/static/Vazirmatn-Light.ttf') format('truetype'),
+         url('/fonts/static/Vazirmatn-Medium.ttf') format('truetype'),
+         url('/fonts/static/Vazirmatn-Regular.ttf') format('truetype'),
+         url('/fonts/static/Vazirmatn-SemiBold.ttf') format('truetype'),
+         url('/fonts/static/Vazirmatn-Thin.ttf') format('truetype'),
+         url('/fonts/Vazirmatn-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Apply the Vazirmatn font family globally */
+body {
+    font-family: 'Vazirmatn', sans-serif;
+}

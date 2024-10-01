@@ -1,0 +1,14 @@
+<div class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+    <div class="container d-flex justify-content-between">
+        <!-- Title aligned to the right in RTL -->
+        <a class="navbar-brand" href="/">پرتال تغییر رمز عبور</a>
+        
+        <!-- Greeting and logout button aligned to the left in RTL -->
+        <div class="d-flex align-items-center">
+            <span class="navbar-text ml-3">سلام، $($data.Username)</span>
+            <form method="post" action="/logout" class="d-inline">
+                <button type="submit" class="btn btn-outline-danger">خروج</button>
+            </form>
+        </div>
+    </div>
+</div>

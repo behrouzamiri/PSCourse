@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خطا</title>
+    <!-- Bootstrap CSS (Local) -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS for Vazirmatn Font -->
+    <link href="/css/custom.css" rel="stylesheet">
+    <style>
+        .centered-form {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #f7f7f7;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background-color: #e9ecef;
+        }
+    </style>
+</head>
+
+<body>
+    $(Use-PodePartialView -Path 'header.pode' -Data $data)
+    <div class="container">
+        <div class="centered-form text-center">
+            <h1>خطا $($data.status.code)</h1>
+            <p class="alert alert-danger">Description: $($data.status.description)</p>
+            $(
+            if ($data.exception) {
+            "
+            <div>
+                <p>Details:</p>
+                <pre>
+                            $($data.exception.message)
+                            $($data.exception.stacktrace)
+                        </pre>
+            </div>";
+            }
+            if($data.redir){
+            "<button class=`"btn btn-primary`" onclick=`"window.location.href='/?redir=$($data.redir)'
+                `">بازگشت</button>" ;
+            } else{
+            "<button class=`"btn btn-primary`" onclick=`"window.location.href='/' `">بازگشت</button>" ;
+            }
+            )
+        </div>
+    </div>
+
+    <!-- Local JavaScript Files -->
+    <script src="/js/jquery-3.7.1.slim.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

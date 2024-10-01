@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بازیابی رمز عبور موفقیت‌آمیز</title>
+    <!-- Bootstrap CSS (Local) -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS for Vazirmatn Font -->
+    <link href="/css/custom.css" rel="stylesheet">
+    <style>
+        .centered-form {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #f7f7f7;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background-color: #e9ecef;
+        }
+
+        strong {
+            font-family: "Lucida Console", "DejaVu Sans Mono", "Adobe Source Code Pro", Tahoma, Sans-serif;
+            color: #0059dd;
+            font-size: 1.3em;
+        }
+    </style>
+</head>
+
+<body>
+    $(Use-PodePartialView -Path 'header.pode' -Data $data)
+    <div class="container">
+        <div class="centered-form text-center">
+            <h3 class="alert alert-success">رمز عبور با موفقیت تغییر یافت</h3>
+            <p>کد ملی: <strong  dir="ltr">$($data.NationalCode;)</strong></p>
+            <p>رمز عبور جدید شما: <strong  dir="ltr">$($data.Password;)</strong></p>
+            <button class="btn btn-secondary" onclick="window.print()">چاپ</button>
+            <button class="btn btn-success" onclick="navigator.clipboard.writeText(&quot;$($data.Password)&quot;)">کپی</button>
+            $(if($data.redir){
+            "<a class=`"btn btn-primary btn-lg`" href=`"$($data.redir;)`">بازگشت به سوپرنوا</a>";
+            } else{})
+            <button class="btn btn-danger" onclick="window.location.href='/'">بستن</button>
+            <div class="btn-group" role="group" aria-label="Actions">
+            </div>
+            <div class="btn-group" role="group" aria-label="Navigate">
+            </div>
+        </div>
+    </div>
+
+    <!-- Local JavaScript Files -->
+    <script src="/js/jquery-3.7.1.slim.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
