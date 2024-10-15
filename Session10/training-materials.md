@@ -141,4 +141,6 @@ Use the `exercises-questions.md` file, and answer the questions.
 
 ---
 
-# Wishing you continued success - With <3 , Behrouz
+✨ **Wishing you continued success** ✨  
+With ❤️,  
+**Behrouz**
